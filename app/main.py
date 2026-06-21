@@ -174,7 +174,7 @@ def build_letter_context(data: LetterPayload) -> dict:
         "pragyapon_date": ph(data.pragyaponDate, "তারিখ"),
         "pragyapon_no": ph(data.pragyaponNo, "প্রজ্ঞাপন নম্বর"),
         "beton_scale": ph(data.betonScale, "বেতন স্কেল"),
-        "grade": ph(data.grade, "গ্রেড"),
+        "grade": ph(data.grade, "good grade"),
         "beton_order": ph(data.betonOrder, "বেতন আদেশ"),
         "join_date": ph(data.joinDate, "যোগদানের তারিখ"),
         "join_day": ph(data.joinDay, "বার"),
