@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>যোগদানপত্র তৈরির ফর্ম</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+<link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+<link href="https://fonts.maateen.me/siyam-rupali/font.css" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2a23;
+    --paper:#fbfaf6;
+    --line:#d8d2c2;
+    --accent:#0f5132;
+    --accent-soft:#e7f0ea;
+    --gold:#9c7a32;
+    --muted:#6b6358;
+    --danger:#9c3b2e;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#eef0ec;
+    font-family:'Noto Sans Bengali','Noto Sans',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .shell{
+    max-width:1280px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+  }
+  .masthead{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:24px;
+    padding-bottom:18px;
+    border-bottom:2px solid var(--accent);
+  }
+  .masthead .seal{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:18px;
+    flex-shrink:0;
+    font-family:'Noto Serif Bengali',serif;
+  }
+  .masthead h1{
+    font-size:20px;
+    margin:0;
+    font-weight:700;
+    letter-spacing:.2px;
+  }
+  .masthead p{
+    margin:2px 0 0;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .layout{
+    display:grid;
+    grid-template-columns:minmax(320px,420px) 1fr;
+    gap:24px;
+    align-items:start;
+  }
+  @media (max-width:920px){
+    .layout{grid-template-columns:1fr;}
+  }
+  .panel{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .panel-head{
+    background:var(--accent-soft);
+    padding:14px 18px;
+    border-bottom:1px solid var(--line);
+  }
+  .panel-head h2{
+    margin:0;
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--accent);
+  }
+  .panel-head span{
+    font-size:11.5px;
+    color:var(--muted);
+  }
+  .form-body{
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    margin-bottom:5px;
+    color:#3a3530;
+  }
+  .field label .req{color:var(--danger);}
+  .field input, .field textarea, .field select{
+    width:100%;
+    padding:9px 11px;
+    border:1px solid #cfc9ba;
+    border-radius:6px;
+    font-family:inherit;
+    font-size:13.5px;
+    background:#fffdf9;
+    color:var(--ink);
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-soft);
+  }
+  .hint.warn{
+    color:var(--danger);
+    font-weight:600;
+  }
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .hint{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  .section-tag{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:var(--gold);
+    font-weight:700;
+    margin:6px 0 -2px;
+  }
+  .actions{
+    padding:16px 18px 18px;
+    border-top:1px solid var(--line);
+    display:flex;
+    gap:10px;
+    flex-direction:column;
+  }
+  .btn{
+    border:none;
+    border-radius:7px;
+    padding:13px 16px;
+    font-family:inherit;
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:transform .08s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{
+    background:var(--accent);
+    color:#fff;
+    box-shadow:0 2px 0 #0a3a23;
+  }
+  .btn-primary:hover{background:#136840;}
+  .btn-primary:disabled{
+    background:#a9b8b0;
+    box-shadow:none;
+    cursor:wait;
+  }
+  .btn-ghost{
+    background:#fff;
+    color:var(--accent);
+    border:1px solid var(--accent);
+  }
+  .btn-ghost:hover{background:var(--accent-soft);}
+  .status{
+    font-size:12px;
+    text-align:center;
+    color:var(--muted);
+    min-height:16px;
+  }
+  .status.ok{color:var(--accent);font-weight:600;}
+
+  /* Preview side */
+  .preview-wrap{
+    background:#dfe3dd;
+    border-radius:10px;
+    border:1px solid var(--line);
+    padding:24px;
+    display:flex;
+    justify-content:center;
+  }
+  .page{
+    background:#ffffff;
+    width:100%;
+    max-width:794px;
+    box-shadow:0 6px 24px rgba(20,30,24,0.18);
+    padding:48px 58px;
+    font-family:'Noto Sans Bengali',sans-serif;
+    color:#161616;
+    line-height:1.65;
+    font-size:14px;
+  }
+  .page.font-noto{ font-family:'Noto Sans Bengali',sans-serif; }
+  .page.font-kalpurush{ font-family:'Kalpurush','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-solaiman{ font-family:'SolaimanLipi','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-siyam{ font-family:'SiyamRupali','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-sutonny{ font-family:'SutonnyMJ','Noto Sans Bengali',sans-serif; }
+  .ltr-date{
+    text-align:left;
+    margin-bottom:0;
+  }
+  .addr-block{margin-bottom:14px;}
+  .addr-block div{margin:0;}
+  .subject{
+    margin:16px 0;
+    text-align:justify;
+  }
+  .subject b{font-weight:700;}
+  .salute{margin-bottom:5px;}
+  .body-para{
+    text-align:justify;
+    margin-bottom:14px;
+  }
+  .closing{margin-bottom:26px;}
+  .sign-block{margin-top:6px;}
+  .sign-block .name{font-weight:700;}
+  .sign-block div{margin:1px 0;}
+  .enclosure-title{
+    font-weight:700;
+    margin-top:22px;
+    margin-bottom:6px;
+  }
+  .enclosure-list{
+    margin:0;
+    padding-left:22px;
+  }
+  .enclosure-list li{margin-bottom:3px;}
+  .placeholder-warn{
+    color:#b3261e;
+    font-weight:600;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:28px;
+    font-size:11.5px;
+    color:var(--muted);
+  }
+
+  /* ---- Real vector PDF via browser print engine ---- */
+  @media print{
+    @page{ size:A4; margin:0; }
+    html,body{ background:#fff; }
+    .shell{ max-width:none; padding:0; margin:0; }
+    .masthead, .panel, footer, .actions{ display:none !important; }
+    .layout{ display:block; }
+    .preview-wrap{
+      background:none; border:none; padding:0; display:block;
+    }
+    .page{
+      box-shadow:none;
+      max-width:none;
+      width:auto;
+      margin:0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="masthead">
+    <div class="seal">য</div>
+    <div>
+      <h1>যোগদানপত্র জেনারেটর</h1>
+      <p>তথ্য পরিবর্তন করলেই ডানে প্রিভিউ আপডেট হবে — "PDF ডাউনলোড করুন" বাটনে ক্লিক করলেই সরাসরি A4 PDF ডাউনলোড হবে</p>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- FORM PANEL -->
+    <div class="panel">
+      <div class="panel-head">
+        <h2>তথ্য পূরণ করুন</h2><br>
+        <span>প্রতিটি পদের জন্য আলাদা ফর্ম পূরণ করে আলাদা PDF নামাতে পারবেন</span>
+      </div>
+      <div class="form-body" id="formBody">
+
+        <div class="section-tag">ফন্ট নির্বাচন</div>
+        <div class="field">
+          <label>লেটারের ফন্ট</label>
+          <select id="f_font">
+            <option value="font-noto" selected>Noto Sans Bengali (ডিফল্ট, সবচেয়ে পরিষ্কার)</option>
+            <option value="font-kalpurush">Kalpurush</option>
+            <option value="font-solaiman">SolaimanLipi (বাংলা একাডেমি ধাঁচ)</option>
+            <option value="font-siyam">Siyam Rupali</option>
+            <option value="font-sutonny">SutonnyMJ (ANSI — নিচে নোট পড়ুন)</option>
+          </select>
+          <div class="hint" id="fontHint"></div>
+        </div>
+
+        <div class="section-tag">প্রাপক</div>
+        <div class="field">
+          <label>প্রাপকের পদবি <span class="req">*</span></label>
+          <input type="text" id="f_recipient" value="সচিব">
+        </div>
+        <div class="field">
+          <label>মন্ত্রণালয় / দপ্তরের নাম <span class="req">*</span></label>
+          <input type="text" id="f_ministry" value="রেলপথ মন্ত্রণালয়">
+        </div>
+        <div class="field">
+          <label>ঠিকানা (লাইন ১)</label>
+          <input type="text" id="f_addr1" value="৪/৩, আব্দুল গণি রোড, রেলভবন">
+        </div>
+        <div class="field">
+          <label>ঠিকানা (লাইন ২)</label>
+          <input type="text" id="f_addr2" value="ঢাকা-১০০০।">
+        </div>
+
+        <div class="section-tag">পদ ও প্রজ্ঞাপন তথ্য</div>
+        <div class="field">
+          <label>অধীনস্থ প্রতিষ্ঠানের নাম <span class="req">*</span></label>
+          <input type="text" id="f_org" value="বাংলাদেশ রেলওয়ে">
+        </div>
+        <div class="field">
+          <label>পদের নাম <span class="req">*</span></label>
+          <input type="text" id="f_post" value="উপ-সহকারী প্রকৌশলী (বিদ্যুৎ)">
+          <div class="hint">প্রতিটি প্রার্থীর জন্য আলাদা হতে পারে</div>
+        </div>
+        <div class="field">
+          <label>প্রশাসনিক শাখা</label>
+          <input type="text" id="f_shakha" value="প্রশাসন-৫ শাখা">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>প্রজ্ঞাপনের তারিখ</label>
+            <input type="text" id="f_pragyaponDate" value="১৭ জুন ২০২৬">
+          </div>
+          <div class="field">
+            <label>প্রজ্ঞাপন নম্বর</label>
+            <input type="text" id="f_pragyaponNo" value="54.00.0000.000.040.11.0062.25.512">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>বেতন স্কেল (টাকা)</label>
+            <input type="text" id="f_betonScale" value="১৬০০০-৩৮৬৪০/-">
+          </div>
+          <div class="field">
+            <label>গ্রেড</label>
+            <input type="text" id="f_grade" value="১০ম গ্রেড">
+          </div>
+        </div>
+        <div class="field">
+          <label>বেতন আদেশের নাম/সাল</label>
+          <input type="text" id="f_betonOrder" value="চাকরি (বেতন ও ভাতাদি) আদেশ, ২০১৫">
+        </div>
+
+        <div class="section-tag">যোগদানের তারিখ</div>
+        <div class="field-row">
+          <div class="field">
+            <label>যোগদানের তারিখ</label>
+            <input type="text" id="f_joinDate" value="১লা জুলাই ২০২৬">
+          </div>
+          <div class="field">
+            <label>বার (দিন)</label>
+            <input type="text" id="f_joinDay" value="বুধবার">
+          </div>
+        </div>
+        <div class="field">
+          <label>চিঠির শিরোনামের তারিখ</label>
+          <input type="text" id="f_letterDate" value="০১/০৭/২০২৬ খ্রিষ্টাব্দ">
+        </div>
+
+        <div class="section-tag">প্রার্থীর ব্যক্তিগত তথ্য</div>
+        <div class="field">
+          <label>পূর্ণ নাম <span class="req">*</span></label>
+          <input type="text" id="f_name" value="মোঃ মেহেদী হাসান">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>রেজিস্ট্রেশন নম্বর</label>
+            <input type="text" id="f_regNo" value="৫০০০৮৯">
+          </div>
+          <div class="field">
+            <label>মেধাক্রম</label>
+            <input type="text" id="f_merit" value="৯৩">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>জেলা</label>
+            <input type="text" id="f_district" value="ভোলা">
+          </div>
+          <div class="field">
+            <label>মোবাইল নম্বর</label>
+            <input type="text" id="f_mobile" value="০১৭৮৩-১৪২৯১৯">
+          </div>
+        </div>
+
+        <div class="section-tag">সংযুক্তি তালিকা (প্রতি লাইনে একটি)</div>
+        <div class="field">
+          <textarea id="f_enclosures" rows="6">সম্প্রতি তোলা ৩(তিন) কপি পাসপোর্ট সাইজের রঙিন সত্যায়িত ছবি।
+শিক্ষাগত যোগ্যতার সকল সনদের সত্যায়িত কপি।
+নাগরিক সনদপত্রের সত্যায়িত কপি।
+জাতীয় পরিচয়পত্রের সত্যায়িত কপি।
+নিজ ও পরিবারের মালিকানাধীন স্থাবর-অস্থাবর সম্পদ বিবরণী।</textarea>
+        </div>
+
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="downloadBtn" onclick="downloadPdf()">⬇ PDF ডাউনলোড করুন</button>
+        <button class="btn btn-ghost" onclick="resetForNext()">+ নতুন প্রার্থীর জন্য রিসেট করুন</button>
+        <div class="status" id="statusMsg"></div>
+      </div>
+    </div>
+
+    <!-- PREVIEW PANEL -->
+    <div>
+      <div class="preview-wrap">
+        <div class="page" id="letterPage">
+          <!-- filled by JS -->
+        </div>
+      </div>
+      <footer>এই প্রিভিউ অনুযায়ী হুবহু A4 PDF তৈরি হবে। ফাঁকা ঘর ছাড়লে সংশ্লিষ্ট স্থানে লাল রঙে নির্দেশ দেখাবে।</footer>
+    </div>
+  </div>
+</div>
+
+<script>
+const ids = ['f_recipient','f_ministry','f_addr1','f_addr2','f_org','f_post','f_shakha',
+  'f_pragyaponDate','f_pragyaponNo','f_betonScale','f_grade','f_betonOrder',
+  'f_joinDate','f_joinDay','f_letterDate','f_name','f_regNo','f_merit','f_district','f_mobile','f_enclosures'];
+
+function val(id){
+  const el = document.getElementById(id);
+  return el.value.trim();
+}
+
+function esc(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function ph(s, fallbackLabel){
+  if(!s) return `<span class="placeholder-warn">[${fallbackLabel}]</span>`;
+  return esc(s);
+}
+
+function renderLetter(){
+  const recipient = val('f_recipient');
+  const ministry = val('f_ministry');
+  const addr1 = val('f_addr1');
+  const addr2 = val('f_addr2');
+  const org = val('f_org');
+  const post = val('f_post');
+  const shakha = val('f_shakha');
+  const pragyaponDate = val('f_pragyaponDate');
+  const pragyaponNo = val('f_pragyaponNo');
+  const betonScale = val('f_betonScale');
+  const grade = val('f_grade');
+  const betonOrder = val('f_betonOrder');
+  const joinDate = val('f_joinDate');
+  const joinDay = val('f_joinDay');
+  const letterDate = val('f_letterDate');
+  const name = val('f_name');
+  const regNo = val('f_regNo');
+  const merit = val('f_merit');
+  const district = val('f_district');
+  const mobile = val('f_mobile');
+  const enclosuresRaw = val('f_enclosures');
+  const enclosures = enclosuresRaw.split('\n').map(s=>s.trim()).filter(Boolean);
+
+  const html = `
+    <div class="ltr-date">তারিখঃ ${ph(letterDate,'তারিখ')}</div>
+
+    <div class="addr-block">
+      <div>বরাবর</div>
+      <div>${ph(recipient,'প্রাপকের পদবি')}</div>
+      <div>${ph(ministry,'মন্ত্রণালয়/দপ্তর')}</div>
+      ${addr1 ? `<div>${esc(addr1)}</div>` : ''}
+      ${addr2 ? `<div>${esc(addr2)}</div>` : ''}
+    </div>
+
+    <div class="subject">
+      <b>বিষয়ঃ</b> ${ph(ministry,'মন্ত্রণালয়')}ের অধীনস্থ ${ph(org,'প্রতিষ্ঠানের নাম')}ের ${ph(post,'পদের নাম')} পদে চাকরিতে যোগদান প্রসঙ্গে।
+    </div>
+
+    <div class="salute">মহোদয়,</div>
+
+    <div class="body-para">
+      বিনীত নিবেদন এই যে, আমি ${ph(name,'প্রার্থীর নাম')} (রেজি নং- ${ph(regNo,'রেজি নং')}), ${ph(ministry,'মন্ত্রণালয়')}ের ${ph(shakha,'শাখা')}র ${ph(pragyaponDate,'তারিখ')} খ্রিষ্টাব্দ এর প্রজ্ঞাপন নং- ${ph(pragyaponNo,'প্রজ্ঞাপন নম্বর')} মোতাবেক ${ph(post,'পদ')} পদে ${ph(betonOrder,'বেতন আদেশ')} এর টাকা ${ph(betonScale,'বেতন স্কেল')} বেতনস্কেলে (${ph(grade,'গ্রেড')}) প্রজ্ঞাপনে বর্ণিত শর্ত গ্রহণযোগ্য মতে অদ্য ${ph(joinDate,'যোগদানের তারিখ')} খ্রিষ্টাব্দ রোজ ${ph(joinDay,'বার')} পূর্বাহ্নে যোগদান করিলাম।
+    </div>
+
+    <div class="closing">
+      অতএব, আমার যোগদানপত্র গ্রহণে মহোদয়ের মর্জি হয়।
+    </div>
+
+    <div class="sign-block">
+      <div>নিবেদক,</div>
+      <div class="name">${ph(name,'প্রার্থীর নাম')}</div>
+      <div>${ph(post,'পদের নাম')}</div>
+      <div>বাংলাদেশ সরকারি কর্ম কমিশনের সুপারিশ অনুযায়ী সম্মিলিত মেধাক্রমঃ ${ph(merit,'মেধাক্রম')}</div>
+      <div>রেজিস্ট্রেশন নম্বরঃ ${ph(regNo,'রেজি নং')}</div>
+      <div>জেলাঃ ${ph(district,'জেলা')}</div>
+      <div>মোবাইলঃ ${ph(mobile,'মোবাইল')}</div>
+    </div>
+
+    <div class="enclosure-title">সংযুক্তিঃ</div>
+    <ol class="enclosure-list">
+      ${enclosures.length ? enclosures.map(e=>{
+        const clean = e.replace(/[।.]+\s*$/,'');
+        return `<li>${esc(clean)}।</li>`;
+      }).join('') : '<li class="placeholder-warn">[সংযুক্তি তালিকা ফাঁকা]</li>'}
+    </ol>
+  `;
+  document.getElementById('letterPage').innerHTML = html;
+  applyFont();
+}
+
+const fontWarnings = {
+  'font-noto': '',
+  'font-kalpurush': '',
+  'font-solaiman': '',
+  'font-siyam': '',
+  'font-sutonny': 'SutonnyMJ একটি পুরনো ANSI (Bijoy-ধাঁচের) ফন্ট, Unicode নয়। তাই Unicode বাংলা টেক্সটের সাথে এটি সঠিকভাবে দেখাবে না — অক্ষর উল্টাপাল্টা আসতে পারে। নিরাপদ ফলাফলের জন্য অন্য কোনো ফন্ট বেছে নিন।'
+};
+
+function applyFont(){
+  const select = document.getElementById('f_font');
+  const chosen = select.value;
+  const page = document.getElementById('letterPage');
+  page.className = 'page ' + chosen;
+
+  const hint = document.getElementById('fontHint');
+  const warning = fontWarnings[chosen] || '';
+  if(warning){
+    hint.textContent = warning;
+    hint.className = 'hint warn';
+  } else {
+    hint.textContent = '';
+    hint.className = 'hint';
+  }
+}
+
+document.getElementById('f_font').addEventListener('change', renderLetter);
+
+ids.forEach(id=>{
+  document.getElementById(id).addEventListener('input', renderLetter);
+});
+
+renderLetter();
+
+async function downloadPdf(){
+  const btn = document.getElementById('downloadBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  btn.disabled = true;
+  btn.textContent = 'তৈরি হচ্ছে...';
+  statusMsg.textContent = '';
+  statusMsg.className = 'status';
+
+  const payload = {
+    font: document.getElementById('f_font').value,
+    recipient: val('f_recipient'),
+    ministry: val('f_ministry'),
+    addr1: val('f_addr1'),
+    addr2: val('f_addr2'),
+    org: val('f_org'),
+    post: val('f_post'),
+    shakha: val('f_shakha'),
+    pragyaponDate: val('f_pragyaponDate'),
+    pragyaponNo: val('f_pragyaponNo'),
+    betonScale: val('f_betonScale'),
+    grade: val('f_grade'),
+    betonOrder: val('f_betonOrder'),
+    joinDate: val('f_joinDate'),
+    joinDay: val('f_joinDay'),
+    letterDate: val('f_letterDate'),
+    name: val('f_name'),
+    regNo: val('f_regNo'),
+    merit: val('f_merit'),
+    district: val('f_district'),
+    mobile: val('f_mobile'),
+    enclosures: val('f_enclosures')
+  };
+
+  try{
+    const res = await fetch('/generate-pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if(!res.ok){
+      const errText = await res.text();
+      throw new Error(errText || ('সার্ভার ত্রুটি: ' + res.status));
+    }
+
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const nameForFile = (payload.name || 'যোগদানপত্র').replace(/[^\u0980-\u09FFa-zA-Z0-9]+/g,'_');
+    const filename = `যোগদানপত্র_${nameForFile}.pdf`;
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+
+    statusMsg.textContent = '✓ ডাউনলোড সম্পন্ন হয়েছে';
+    statusMsg.className = 'status ok';
+  } catch(err){
+    console.error(err);
+    statusMsg.textContent = 'দুঃখিত, একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+    statusMsg.className = 'status';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⬇ PDF ডাউনলোড করুন';
+  }
+}
+
+function resetForNext(){
+  // Keep ministry/post/salary/date info (shared across candidates),
+  // clear personal fields so the user can fill the next candidate fast.
+  const personal = ['f_name','f_regNo','f_merit','f_district','f_mobile'];
+  personal.forEach(id=>{ document.getElementById(id).value=''; });
+  document.getElementById('f_name').focus();
+  renderLetter();
+  const statusMsg = document.getElementById('statusMsg');
+  statusMsg.textContent = 'ব্যক্তিগত তথ্য মুছে ফেলা হয়েছে — নতুন প্রার্থীর তথ্য দিন';
+  statusMsg.className = 'status';
+}
+</script>
+
+</body>
+</html>

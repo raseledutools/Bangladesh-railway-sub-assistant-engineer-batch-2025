@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>যোগদানপত্র</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+<link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+<link href="https://fonts.maateen.me/siyam-rupali/font.css" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#fff;}
+
+  @page{ size:A4; margin:0; }
+
+  .page{
+    background:#ffffff;
+    width:210mm;
+    min-height:297mm;
+    box-sizing:border-box;
+    padding:18mm 18mm;
+    font-family:'Noto Sans Bengali','Noto Sans',sans-serif;
+    color:#161616;
+    line-height:1.65;
+    font-size:14px;
+  }
+  .page.font-noto{ font-family:'Noto Sans Bengali',sans-serif; }
+  .page.font-kalpurush{ font-family:'Kalpurush','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-solaiman{ font-family:'SolaimanLipi','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-siyam{ font-family:'SiyamRupali','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-sutonny{ font-family:'SutonnyMJ','Noto Sans Bengali',sans-serif; }
+
+  .ltr-date{
+    text-align:left;
+    margin-bottom:0;
+  }
+  .addr-block{margin-bottom:14px;}
+  .addr-block div{margin:0;}
+  .subject{
+    margin:16px 0;
+    text-align:justify;
+  }
+  .subject b{font-weight:700;}
+  .salute{margin-bottom:5px;}
+  .body-para{
+    text-align:justify;
+    margin-bottom:14px;
+  }
+  .closing{margin-bottom:26px;}
+  .sign-block{margin-top:6px;}
+  .sign-block .name{font-weight:700;}
+  .sign-block div{margin:1px 0;}
+  .enclosure-title{
+    font-weight:700;
+    margin-top:22px;
+    margin-bottom:6px;
+  }
+  .enclosure-list{
+    margin:0;
+    padding-left:22px;
+  }
+  .enclosure-list li{margin-bottom:3px;}
+  .placeholder-warn{
+    color:#b3261e;
+    font-weight:600;
+  }
+</style>
+</head>
+<body>
+  <div class="page {{ font_class }}" id="letterPage">
+    <div class="ltr-date">তারিখঃ {{ letter_date }}</div>
+
+    <div class="addr-block">
+      <div>বরাবর</div>
+      <div>{{ recipient }}</div>
+      <div>{{ ministry }}</div>
+      {% if addr1 %}<div>{{ addr1 }}</div>{% endif %}
+      {% if addr2 %}<div>{{ addr2 }}</div>{% endif %}
+    </div>
+
+    <div class="subject">
+      <b>বিষয়ঃ</b> {{ ministry }}ের অধীনস্থ {{ org }}ের {{ post }} পদে চাকরিতে যোগদান প্রসঙ্গে।
+    </div>
+
+    <div class="salute">মহোদয়,</div>
+
+    <div class="body-para">
+      বিনীত নিবেদন এই যে, আমি {{ name }} (রেজি নং- {{ reg_no }}), {{ ministry }}ের {{ shakha }}র {{ pragyapon_date }} খ্রিষ্টাব্দ এর প্রজ্ঞাপন নং- {{ pragyapon_no }} মোতাবেক {{ post }} পদে {{ beton_order }} এর টাকা {{ beton_scale }} বেতনস্কেলে ({{ grade }}) প্রজ্ঞাপনে বর্ণিত শর্ত গ্রহণযোগ্য মতে অদ্য {{ join_date }} খ্রিষ্টাব্দ রোজ {{ join_day }} পূর্বাহ্নে যোগদান করিলাম।
+    </div>
+
+    <div class="closing">
+      অতএব, আমার যোগদানপত্র গ্রহণে মহোদয়ের মর্জি হয়।
+    </div>
+
+    <div class="sign-block">
+      <div>নিবেদক,</div>
+      <div class="name">{{ name }}</div>
+      <div>{{ post }}</div>
+      <div>বাংলাদেশ সরকারি কর্ম কমিশনের সুপারিশ অনুযায়ী সম্মিলিত মেধাক্রমঃ {{ merit }}</div>
+      <div>রেজিস্ট্রেশন নম্বরঃ {{ reg_no }}</div>
+      <div>জেলাঃ {{ district }}</div>
+      <div>মোবাইলঃ {{ mobile }}</div>
+    </div>
+
+    <div class="enclosure-title">সংযুক্তিঃ</div>
+    <ol class="enclosure-list">
+      {% if enclosures %}
+        {% for e in enclosures %}
+          <li>{{ e }}।</li>
+        {% endfor %}
+      {% else %}
+        <li class="placeholder-warn">[সংযুক্তি তালিকা ফাঁকা]</li>
+      {% endif %}
+    </ol>
+  </div>
+</body>
+</html>
