@@ -10,8 +10,6 @@
 <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
 <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
 <link href="https://fonts.maateen.me/siyam-rupali/font.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root{
     --ink:#1c2a23;
@@ -213,14 +211,13 @@
     font-size:14px;
   }
   .page.font-noto{ font-family:'Noto Sans Bengali',sans-serif; }
-  .page.font-kalpurush{ font-family:'Kalpurush','Noto Sans Bengali',sans-serif; font-size:14.5px; line-height:1.7; }
-  .page.font-solaiman{ font-family:'SolaimanLipi','Noto Sans Bengali',sans-serif; font-size:14.5px; line-height:1.7; }
-  .page.font-siyam{ font-family:'SiyamRupali','Noto Sans Bengali',sans-serif; font-size:14.5px; line-height:1.7; }
+  .page.font-kalpurush{ font-family:'Kalpurush','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-solaiman{ font-family:'SolaimanLipi','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
+  .page.font-siyam{ font-family:'SiyamRupali','Noto Sans Bengali',sans-serif; font-size:13px; line-height:1.6; }
   .page.font-sutonny{ font-family:'SutonnyMJ','Noto Sans Bengali',sans-serif; }
   .ltr-date{
     text-align:left;
-    margin-bottom:14px;
-    font-size:14.5px;
+    margin-bottom:0;
   }
   .addr-block{margin-bottom:14px;}
   .addr-block div{margin:0;}
@@ -259,6 +256,24 @@
     font-size:11.5px;
     color:var(--muted);
   }
+
+  /* ---- Real vector PDF via browser print engine ---- */
+  @media print{
+    @page{ size:A4; margin:0; }
+    html,body{ background:#fff; }
+    .shell{ max-width:none; padding:0; margin:0; }
+    .masthead, .panel, footer, .actions{ display:none !important; }
+    .layout{ display:block; }
+    .preview-wrap{
+      background:none; border:none; padding:0; display:block;
+    }
+    .page{
+      box-shadow:none;
+      max-width:none;
+      width:auto;
+      margin:0;
+    }
+  }
 </style>
 </head>
 <body>
@@ -268,7 +283,7 @@
     <div class="seal">য</div>
     <div>
       <h1>যোগদানপত্র জেনারেটর</h1>
-      <p>তথ্য পরিবর্তন করলেই ডানে প্রিভিউ আপডেট হবে — Download চাপলে সরাসরি PDF নামবে, কোনো প্রিন্ট উইন্ডো খুলবে না</p>
+      <p>তথ্য পরিবর্তন করলেই ডানে প্রিভিউ আপডেট হবে — "PDF ডাউনলোড করুন" বাটনে ক্লিক করলেই সরাসরি A4 PDF ডাউনলোড হবে</p>
     </div>
   </div>
 
@@ -417,7 +432,7 @@
           <!-- filled by JS -->
         </div>
       </div>
-      <footer>এই প্রিভিউ অনুযায়ী হুবহু PDF তৈরি হবে। ফাঁকা ঘর ছাড়লে সংশ্লিষ্ট স্থানে লাল রঙে নির্দেশ দেখাবে।</footer>
+      <footer>এই প্রিভিউ অনুযায়ী হুবহু A4 PDF তৈরি হবে। ফাঁকা ঘর ছাড়লে সংশ্লিষ্ট স্থানে লাল রঙে নির্দেশ দেখাবে।</footer>
     </div>
   </div>
 </div>
@@ -553,56 +568,55 @@ async function downloadPdf(){
   statusMsg.textContent = '';
   statusMsg.className = 'status';
 
+  const payload = {
+    font: document.getElementById('f_font').value,
+    recipient: val('f_recipient'),
+    ministry: val('f_ministry'),
+    addr1: val('f_addr1'),
+    addr2: val('f_addr2'),
+    org: val('f_org'),
+    post: val('f_post'),
+    shakha: val('f_shakha'),
+    pragyaponDate: val('f_pragyaponDate'),
+    pragyaponNo: val('f_pragyaponNo'),
+    betonScale: val('f_betonScale'),
+    grade: val('f_grade'),
+    betonOrder: val('f_betonOrder'),
+    joinDate: val('f_joinDate'),
+    joinDay: val('f_joinDay'),
+    letterDate: val('f_letterDate'),
+    name: val('f_name'),
+    regNo: val('f_regNo'),
+    merit: val('f_merit'),
+    district: val('f_district'),
+    mobile: val('f_mobile'),
+    enclosures: val('f_enclosures')
+  };
+
   try{
-    // wait for fonts to be fully ready so canvas capture is crisp
-    if(document.fonts && document.fonts.ready){
-      await document.fonts.ready;
-    }
-
-    const node = document.getElementById('letterPage');
-
-    const canvas = await html2canvas(node, {
-      scale: 3,
-      useCORS: true,
-      backgroundColor: '#ffffff'
+    const res = await fetch('/generate-pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.97);
-
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
-    });
-
-    const pageWidth = 210;
-    const pageHeight = 297;
-
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    // Place the letter flush to the page, full width, top-aligned.
-    // (Page CSS already keeps content within one A4 sheet's worth of height.)
-    pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-
-    // Safety net: only if content somehow overflows past A4 height,
-    // add a continuation page rather than silently cutting content off.
-    if(imgHeight > pageHeight){
-      let heightLeft = imgHeight - pageHeight;
-      let position = -pageHeight;
-      while(heightLeft > 0){
-        pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        position -= pageHeight;
-      }
+    if(!res.ok){
+      const errText = await res.text();
+      throw new Error(errText || ('সার্ভার ত্রুটি: ' + res.status));
     }
 
-    const nameForFile = (val('f_name') || 'যোগদানপত্র').replace(/[^\u0980-\u09FFa-zA-Z0-9]+/g,'_');
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const nameForFile = (payload.name || 'যোগদানপত্র').replace(/[^\u0980-\u09FFa-zA-Z0-9]+/g,'_');
     const filename = `যোগদানপত্র_${nameForFile}.pdf`;
 
-    pdf.save(filename);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
 
     statusMsg.textContent = '✓ ডাউনলোড সম্পন্ন হয়েছে';
     statusMsg.className = 'status ok';
