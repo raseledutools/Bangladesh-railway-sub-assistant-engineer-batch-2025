@@ -225,19 +225,17 @@ async def generate_pdf(payload: LetterPayload):
 
     html_content = template.render(**context)
 
-    page = await _browser.new_page()
+    # A4 at 96dpi: 210mm = 794px, 297mm = 1123px
+    page = await _browser.new_page(viewport={"width": 794, "height": 1123})
     try:
         await page.set_content(html_content, wait_until="networkidle")
         # ফন্ট গুলো ঠিকমতো লোড হওয়ার জন্য
         await page.evaluate("document.fonts.ready")
 
-        # A4 পেজের উচ্চতা px এ (page.html এ .page width 210mm রাখা আছে,
-        # তাই rendered px width দিয়ে mm-to-px অনুপাত বের করে target height হিসাব করি)
-        await _fit_single_page(page)
-
         pdf_bytes = await page.pdf(
             format="A4",
             print_background=True,
+            prefer_css_page_size=True,
             margin={"top": "0mm", "bottom": "0mm", "left": "0mm", "right": "0mm"},
         )
     finally:
